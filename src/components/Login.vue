@@ -41,6 +41,7 @@
                  }
             }
         },
+
         methods:{
             //登录表单重置
             resetLogin(){
@@ -66,6 +67,7 @@
                        this.$router.push('/home')
                     })
                 })
+               
             }
         }
     }

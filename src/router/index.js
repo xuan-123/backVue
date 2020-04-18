@@ -4,7 +4,15 @@ import VueRouter from 'vue-router'
 //路由懒加载方式：
 const Login = () => import('../components/Login')
 const Home = ()=> import('../components/Home')
-
+const Welcome = () => import('../components/Welcome')
+const Uesrs = () =>import('../components/user/Users')
+const JsList = ()=>import('../components/auth/JsList')
+const AuthList = ()=>import('../components/auth/AuthList')
+const GetoMeta = () => import('../components/goods/GetoMeta')
+const GoodGeto = () => import('../components/goods/GoodGeto')
+const Goodlist = () => import('../components/goods/GoodList')
+const OrderGeto =()=>import('../components/ordergeto/OrderGeto')
+const DataDetail = () => import('../components/data/DataDetail')
 //通过Vue.use(插件),安装插件
 Vue.use(VueRouter)
 //创建VueRouter对象
@@ -20,8 +28,53 @@ const routes = [
     },
     {
         path:'/home',
-        component:Home
-    }
+        component:Home,
+        // redirect: '/welcome',
+        children:[
+            {
+                path:'welcome',
+                component: Welcome
+            },
+            {
+                path:'userlist',
+                component: Uesrs
+            },
+            {
+                path:'jslist',
+                component: JsList
+            },
+            {
+                path:'authlist',
+                component:AuthList
+            },
+            {
+                path:'getometa',
+                component: GetoMeta
+            },
+            {
+                path:'goodgeto',
+                component:GoodGeto
+            },
+            {
+                path:'goodlist',
+                component: Goodlist
+            },
+            {
+                path:'ordergeto',
+                component: OrderGeto
+            },
+            {
+                path:'datadetail',
+                component:DataDetail
+            },
+            {
+                path:'',
+                redirect:'Welcome'
+            }
+            
+        ]
+    },
+   
    
 ]
 const router =new VueRouter({
