@@ -16,7 +16,7 @@
                             </el-input>
                         </el-col>
                         <el-col :span="4">
-                            <el-button type="primary">添加用户</el-button>
+                            <el-button type="primary" @click="addDialo=true">添加用户</el-button>
                         </el-col>
                     </el-row>
                 </div>
@@ -56,6 +56,33 @@
                             :total="400">
                             </el-pagination>
                         </div>
+                        <!-- 添加用户对话框 -->
+                        <el-dialog
+                            title="提示"
+                            :visible.sync="addDialo"
+                            width="30%"
+                            @close="addClose"
+                            >
+                        <el-form :model="addForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                            <el-form-item label="用户名" prop="username">
+                                <el-input v-model="addForm.username"></el-input>
+                            </el-form-item>
+                            <el-form-item label="密码" prop="password">
+                                <el-input v-model="addForm.password"></el-input>
+                            </el-form-item>
+                            <el-form-item label="邮箱" prop="email">
+                                <el-input v-model="addForm.email"></el-input>
+                            </el-form-item>
+                            <el-form-item label="手机" prop="tel">
+                                <el-input v-model="addForm.tel"></el-input>
+                            </el-form-item>
+                        </el-form>
+
+                            <span slot="footer" class="dialog-footer">
+                                <el-button @click="addDialo = false">取 消</el-button>
+                                <el-button type="primary" @click="addUser">确 定</el-button>
+                            </span>
+                        </el-dialog>
             </div>
         </el-card>
      
@@ -66,36 +93,69 @@
     export default{
         data(){
             return {
+                
+                addForm:{
+                    username:'',
+                    password:'',
+                    email:'',
+                    tel:''
+                },
+                rules: {
+                    username: [
+                        { required: true, message: '请输入用户名', trigger: 'blur' },
+                        { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                    ],
+                     password: [
+                        { required: true, message: '请输密码', trigger: 'blur' },
+                   
+    ],
+                     email: [
+                        { required: true, message: '请输邮箱', trigger: 'blur' },
+                        { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                    ],
+                    tel:[
+                        
+                        { required: true, message: '请输手机', trigger: 'blur' },
+                        { min: 3, max: 5, message: '长度在 3 到 11 个字符', trigger: 'blur' }
+
+                        
+                    ]
+                },
+                addDialo:'false',//控制添加用户的添加与隐藏
                 inputText:'',
-                 userlist:[
+                userlist:[
                     {
-                        id:'1',
-                        name:"xuan",
-                        email:'1875666@12.com',
-                        tel:'18734556666',
-                        role:'超级管理员',
+                        'id':'1',
+                        'name':"xuan",
+                        'email':'1875666@12.com',
+                        'tel':'18734556666',
+                        'role':'超级管理员',
                         'statu':true
                     },
                     {
-                    id:'2',
-                    name:"lei",
-                    email:'187566256@12.com',
-                    tel:'13366262354',
-                    role:'超级管理员',
+                    'id':'2',
+                    'name':"lei",
+                    'email':'187566256@12.com',
+                    'tel':'13366262354',
+                    'role':'超级管理员',
                     'statu':true
 
                 },
                 {
-                    id:'3',
-                    name:"li",
-                    email:'1875655266@12.com',
-                    tel:'18734577788',
-                    role:'超级管理员',
+                    'id':'3',
+                    'name':"li",
+                    'email':'1875655266@12.com',
+                    'tel':'18734577788',
+                    'role':'超级管理员',
                     'statu':true
-
-                }
+                },
+               
             ]
             }
+        },
+        created(){
+            let addUser = localStorage.getItem('addUser')
+            this.userlist.push(JSON.parse(addUser))
         },
         methods:{
             changeStatu(message){
@@ -104,7 +164,23 @@
             },
             clearText(){
                 this.$message.success('清空成功')
+            },
+            addClose(){
+                this.$refs.ruleForm.resetFields()
+            },
+            addUser(){
+                this.$refs.ruleForm.validate(valid =>{
+                    if(!valid) return 
+                  
+                   
+               localStorage.setItem('addUser',JSON.stringify(this.addForm))
+                let addUser = localStorage.getItem('addUser')
+                // addUser.push(userPush)
+                this.userlist.push(JSON.parse(addUser))
+                })
+                this.addDialo = false
             }
+
 
         }
     }
